@@ -107,7 +107,7 @@ export const handleCheckoutSessionCreation = async (
           : [
               {
                 price,
-                quantity,
+                // quantity,
               },
             ],
         mode,
