@@ -68,14 +68,8 @@ export const handleCheckoutSessionCreation = async (
     }
     let customerRecord = (await parentRef.get()).data();
     if (!customerRecord?.stripeId) {
-      const { email, phoneNumber } = await admin
-        .auth()
-        .getUser(context.params.uid);
-
       const newCustomerRecord = await createCustomerRecord({
         uid: context.params.uid,
-        email,
-        phone: phoneNumber,
       });
 
       if (!newCustomerRecord) {

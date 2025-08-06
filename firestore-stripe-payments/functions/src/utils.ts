@@ -211,28 +211,28 @@ export const manageSubscriptionStatusChange = async (
 
   logs.firestoreDocCreated('subscriptions', subscription.id);
 
-  // Update their custom claims
-  if (role) {
-    try {
-      // Get existing claims for the user
-      const { customClaims } = await admin.auth().getUser(uid);
-      // Set new role in custom claims as long as the subs status allows
-      if (['trialing', 'active'].includes(subscription.status)) {
-        logs.userCustomClaimSet(uid, 'stripeRole', role);
-        await admin
-          .auth()
-          .setCustomUserClaims(uid, { ...customClaims, stripeRole: role });
-      } else {
-        logs.userCustomClaimSet(uid, 'stripeRole', 'null');
-        await admin
-          .auth()
-          .setCustomUserClaims(uid, { ...customClaims, stripeRole: null });
-      }
-    } catch (error) {
-      // User has been deleted, simply return.
-      return;
-    }
-  }
+  // // Update their custom claims
+  // if (role) {
+  //   try {
+  //     // Get existing claims for the user
+  //     const { customClaims } = await admin.firestore().collection(config.customersCollectionPath).doc(uid).get().then(doc => doc.data() || {});
+  //     // Set new role in custom claims as long as the subs status allows
+  //     if (['trialing', 'active'].includes(subscription.status)) {
+  //       logs.userCustomClaimSet(uid, 'stripeRole', role);
+  //       await admin
+  //         .auth()
+  //         .setCustomUserClaims(uid, { ...customClaims, stripeRole: role });
+  //     } else {
+  //       logs.userCustomClaimSet(uid, 'stripeRole', 'null');
+  //       await admin
+  //         .auth()
+  //         .setCustomUserClaims(uid, { ...customClaims, stripeRole: null });
+  //     }
+  //   } catch (error) {
+  //     // User has been deleted, simply return.
+  //     return;
+  //   }
+  // }
 
   // NOTE: This is a costly operation and should happen at the very end.
   // Copy the billing deatils to the customer object.
