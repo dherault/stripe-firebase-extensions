@@ -1,5 +1,6 @@
 {
-  "name": "firestore-stripe-payments",
+  "name": "firestore-stripe-payments-dherault",
+  "version": "0.0.1",
   "engines": {
     "node": "20"
   },
