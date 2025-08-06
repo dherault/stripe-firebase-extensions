@@ -66,7 +66,7 @@ export const handleCheckoutSessionCreation = async (
     if (!parentRef) {
       throw new Error('Invalid document reference, no parent collection found');
     }
-    let customerRecord = (await parentRef.get()).data();
+    let customerRecord = (await parentRef.get()).data(); // Organization
     if (!customerRecord?.stripeId) {
       const newCustomerRecord = await createCustomerRecord({
         uid: context.params.uid,
