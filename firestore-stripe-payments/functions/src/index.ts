@@ -68,8 +68,8 @@ exports.createCheckoutSession = functions
 export const createPortalLink = functions.https.onCall(
   async (data, context) => {
     // Checking that the user is authenticated.
-    const uid = context.auth?.uid;
-    if (!uid) {
+    const uidNoUse = context.auth?.uid;
+    if (!uidNoUse) {
       // Throwing an HttpsError so that the client gets the error details.
       throw new functions.https.HttpsError(
         'unauthenticated',
@@ -103,7 +103,7 @@ export const createPortalLink = functions.https.onCall(
       if (!customerRecord?.stripeId) {
         // @ts-ignore
         customerRecord = await createCustomerRecord({
-          uid,
+          uid: organizationId,
         });
       }
       // @ts-ignore
@@ -124,10 +124,10 @@ export const createPortalLink = functions.https.onCall(
         (params as any).flow_data = flow_data;
       }
       const session = await stripe.billingPortal.sessions.create(params);
-      logs.createdBillingPortalLink(uid);
+      logs.createdBillingPortalLink(organizationId);
       return session;
     } catch (error) {
-      logs.billingPortalLinkCreationError(uid, error);
+      logs.billingPortalLinkCreationError(uidNoUse, error);
       throw new functions.https.HttpsError('internal', error.message);
     }
   },
